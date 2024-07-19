@@ -1,38 +1,10 @@
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const express = require('express');
-const cors = require("cors");
 
 const httpServer = createServer();
-
-const corsOptions = {
-  origin: ["http://localhost:5173"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-};
-
 const io = new Server(httpServer, {
-  cors: corsOptions,
+  cors: "https://multiplyaertictactoe.vercel.app/",
 });
-const app = express();
-app.set("io", io);
-app.use(express.json());
-
-app.use(cors(corsOptions));
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin)) {
-        console.log(origin, allowedOrigins);
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
 
 const allUsers = {};
 const allRooms = [];
