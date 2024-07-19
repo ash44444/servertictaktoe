@@ -10,7 +10,7 @@ const corsOptions = {
   credentials: true,
 };
 
-const io = new Server(httpServer,, {
+const io = new Server(httpServer, {
   cors: corsOptions,
 });
 app.set("io", io);
