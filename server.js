@@ -13,6 +13,7 @@ const corsOptions = {
 const io = new Server(httpServer, {
   cors: corsOptions,
 });
+const app = express();
 app.set("io", io);
 app.use(express.json());
 app.use(cookieParser());
