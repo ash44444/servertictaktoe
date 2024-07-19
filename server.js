@@ -17,7 +17,7 @@ const io = new Server(httpServer, {
 const app = express();
 app.set("io", io);
 app.use(express.json());
-app.use(cookieParser());
+
 app.use(cors(corsOptions));
 app.use(
   cors({
