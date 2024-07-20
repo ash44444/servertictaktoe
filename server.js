@@ -17,12 +17,15 @@ const allUsers = {};
 const allRooms = [];
 
 io.on("connection", (socket) => {
+  console.log(`New connection: ${socket.id}`);
+  
   allUsers[socket.id] = {
     socket: socket,
     online: true,
   };
 
   socket.on("request_to_play", (data) => {
+    console.log(`User ${socket.id} requested to play:`, data);
     const currentUser = allUsers[socket.id];
     currentUser.playerName = data.playerName;
 
@@ -37,6 +40,7 @@ io.on("connection", (socket) => {
     }
 
     if (opponentPlayer) {
+      console.log(`Opponent found for ${socket.id}: ${opponentPlayer.socket.id}`);
       allRooms.push({
         player1: opponentPlayer,
         player2: currentUser,
@@ -53,22 +57,26 @@ io.on("connection", (socket) => {
       });
 
       currentUser.socket.on("playerMoveFromClient", (data) => {
+        console.log(`Move from ${socket.id} to ${opponentPlayer.socket.id}:`, data);
         opponentPlayer.socket.emit("playerMoveFromServer", {
           ...data,
         });
       });
 
       opponentPlayer.socket.on("playerMoveFromClient", (data) => {
+        console.log(`Move from ${opponentPlayer.socket.id} to ${socket.id}:`, data);
         currentUser.socket.emit("playerMoveFromServer", {
           ...data,
         });
       });
     } else {
+      console.log(`No opponent found for ${socket.id}`);
       currentUser.socket.emit("OpponentNotFound");
     }
   });
 
   socket.on("disconnect", function () {
+    console.log(`User disconnected: ${socket.id}`);
     const currentUser = allUsers[socket.id];
     currentUser.online = false;
     currentUser.playing = false;
