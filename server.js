@@ -1,5 +1,6 @@
-\const { createServer } = require("http");
+const { createServer } = require("http");
 const { Server } = require("socket.io");
+const dotenv = require"dotenv";
 
 const PORT = process.env.PORT || 3000;
 
