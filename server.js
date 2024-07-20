@@ -1,9 +1,16 @@
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
+const PORT = process.env.PORT || 3000;
+
 const httpServer = createServer();
 const io = new Server(httpServer, {
-  cors: "https://multiplyaertictactoe.vercel.app/",
+  cors: {
+    origin: "https://multiplyaertictactoe.vercel.app",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
 });
 
 const allUsers = {};
@@ -82,4 +89,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
+httpServer.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
